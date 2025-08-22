@@ -1,0 +1,17 @@
+services:
+  react-build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - chatwoot_app_front:/chatwoot_app_front
+    command: >
+      sh -c "
+        npm ci &&
+        npm run build &&
+        rm -rf /chatwoot_app_front/* &&
+        cp -r /app/build/* /chatwoot_app_front/
+      "
+
+volumes:
+  chatwoot_app_front:
