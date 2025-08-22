@@ -11,3 +11,4 @@ services:
 
 volumes:
   chatwoot_app_front:
+    external: true
