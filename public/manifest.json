@@ -16,5 +16,11 @@
     "48": "logo192.png",
     "128": "logo512.png"
   },
-  "permissions": []
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://chatwoot.qodeq.net/*"
+  ]
 }
