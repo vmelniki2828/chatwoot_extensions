@@ -127,7 +127,6 @@ const App = () => {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'cw_d_session_info': 'bfd7a7ad-17db-49d2-bc9a-01cee198b728'
         }
       });
       if (response.ok) {
@@ -150,7 +149,6 @@ const App = () => {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'cw_d_session_info': 'bfd7a7ad-17db-49d2-bc9a-01cee198b728'
         }
       });
       if (response.ok) {
@@ -171,7 +169,6 @@ const App = () => {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'cw_d_session_info': 'bfd7a7ad-17db-49d2-bc9a-01cee198b728'
         }
       });
       if (response.ok) {
