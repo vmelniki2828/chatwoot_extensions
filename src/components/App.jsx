@@ -93,8 +93,6 @@ const App = () => {
       setAgentInputValue(getAgentName(formData.agent));
     }
   }, 
-  //[formData.team, formData.agent, teamInputValue, agentInputValue]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   [formData.team, formData.agent, teamInputValue, agentInputValue]);
 
   // Упрощённая функция получения pageData только из URL параметров
