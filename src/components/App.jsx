@@ -695,10 +695,11 @@ const App = () => {
               <div className="tags-list-title"><span role="img" aria-label="Теги">🏷️</span> Выбранные теги:</div>
               <div className="tags-list">
                 {formData.tags.map(tag => (
-                  <span className="tag-item" key={tag}>
-                    {getTagName(tag)}
-                    <button type="button" onClick={() => handleRemoveTag(tag)} title="Удалить тег" aria-label="Удалить тег">×</button>
-                  </span>
+                  <div className="tag-pill" key={tag}>
+                    <span className="tag-pill-icon" role="img" aria-label="Тег">🏷️</span>
+                    <span className="tag-pill-text">{getTagName(tag)}</span>
+                    <button type="button" className="tag-pill-remove" onClick={() => handleRemoveTag(tag)} title="Удалить тег" aria-label="Удалить тег">×</button>
+                  </div>
                 ))}
               </div>
             </div>
