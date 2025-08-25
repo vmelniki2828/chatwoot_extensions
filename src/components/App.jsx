@@ -207,6 +207,10 @@ const App = () => {
     function handleDashboardMessage(event) {
       if (!isJSONValid(event.data)) return;
       const eventData = JSON.parse(event.data);
+      // Если пришёл appContext с conversation.id — сохраняем его
+      if (eventData.event === 'appContext' && eventData.data && eventData.data.conversation && eventData.data.conversation.id) {
+        setPageData(prev => ({ ...prev, conversationId: eventData.data.conversation.id }));
+      }
       // Выводим в консоль полученные данные
       console.log('[Chatwoot Dashboard App] Получен eventData:', eventData);
     }
@@ -587,13 +591,9 @@ const App = () => {
       <hr />
       
       {/* Отладочная информация */}
-      {pageData.conversationId ? (
+      {pageData.conversationId && (
         <div className="status-message">
           <strong>Conversation ID:</strong> {pageData.conversationId}
-        </div>
-      ) : (
-        <div className="status-message error">
-          Conversation ID не найден. Добавьте ?conversation_id=... в URL.
         </div>
       )}
       
