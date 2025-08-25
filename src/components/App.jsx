@@ -712,8 +712,8 @@ const App = () => {
         </div>
 
         <div style={{display:'flex',gap:'10px'}}>
-          <button type="submit" disabled={!pageData.conversationId}>Создать тикет</button>
-          <button type="button" className="secondary-btn" onClick={() => {
+          <button type="submit" className="main-btn" disabled={!pageData.conversationId}>Создать тикет</button>
+          <button type="button" className="secondary-btn main-btn" onClick={() => {
             const clearedFormData = {
               subject: '', requesterName: '', email: '', team: '', agent: '', priority: 'Medium', status: 'open', privateNote: '', sendNotification: false, tags: []
             };
