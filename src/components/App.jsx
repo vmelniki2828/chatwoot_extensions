@@ -623,26 +623,30 @@ const App = () => {
 
         <div>
           <label>Команда</label>
-          <input type="text" value={teamInputValue !== '' ? teamInputValue : getTeamName(formData.team)} onChange={handleTeamInputChange} placeholder="Введите название команды..." />
-          {showTeamSuggestions && teamSuggestions.length > 0 && (
-            <div className="suggestion-container">
-              {teamSuggestions.map((team, index) => (
-                <div key={index} onClick={() => handleTeamSuggestionClick(team)}>{team.name || team.ID || team.id || team}</div>
-              ))}
-            </div>
-          )}
+          <div style={{position: 'relative'}}>
+            <input type="text" value={teamInputValue !== '' ? teamInputValue : getTeamName(formData.team)} onChange={handleTeamInputChange} placeholder="Введите название команды..." />
+            {showTeamSuggestions && teamSuggestions.length > 0 && (
+              <div className="suggestion-container">
+                {teamSuggestions.map((team, index) => (
+                  <div key={index} onClick={() => handleTeamSuggestionClick(team)}>{team.name || team.ID || team.id || team}</div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div>
           <label>Агент</label>
-          <input type="text" value={agentInputValue !== '' ? agentInputValue : getAgentName(formData.agent)} onChange={handleAgentInputChange} placeholder="Введите имя агента... (необязательно)" disabled={loading} />
-          {showAgentSuggestions && agentSuggestions.length > 0 && (
-            <div className="suggestion-container">
-              {agentSuggestions.map((agent, index) => (
-                <div key={index} onClick={() => handleAgentSuggestionClick(agent)}>{agent.name || agent.ID || agent.id || agent}</div>
-              ))}
-            </div>
-          )}
+          <div style={{position: 'relative'}}>
+            <input type="text" value={agentInputValue !== '' ? agentInputValue : getAgentName(formData.agent)} onChange={handleAgentInputChange} placeholder="Введите имя агента... (необязательно)" disabled={loading} />
+            {showAgentSuggestions && agentSuggestions.length > 0 && (
+              <div className="suggestion-container">
+                {agentSuggestions.map((agent, index) => (
+                  <div key={index} onClick={() => handleAgentSuggestionClick(agent)}>{agent.name || agent.ID || agent.id || agent}</div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div>
@@ -668,14 +672,16 @@ const App = () => {
 
         <div>
           <label>Теги</label>
-          <input type="text" value={newTag} onChange={handleTagInputChange} onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), handleAddTag())} placeholder="Введите тег..." />
-          {showSuggestions && suggestions.length > 0 && (
-            <div className="suggestion-container">
-              {suggestions.map((suggestion, index) => (
-                <div key={index} onClick={() => handleSuggestionClick(suggestion)}>{suggestion.name || suggestion.id || suggestion}</div>
-              ))}
-            </div>
-          )}
+          <div style={{position: 'relative'}}>
+            <input type="text" value={newTag} onChange={handleTagInputChange} onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), handleAddTag())} placeholder="Введите тег..." />
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="suggestion-container">
+                {suggestions.map((suggestion, index) => (
+                  <div key={index} onClick={() => handleSuggestionClick(suggestion)}>{suggestion.name || suggestion.id || suggestion}</div>
+                ))}
+              </div>
+            )}
+          </div>
           {availableTags.length > 0 && (
             <select onChange={e => handleSelectTag(e.target.value)} value="">
               <option value="">Выберите тег...</option>
