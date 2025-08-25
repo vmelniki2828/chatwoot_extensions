@@ -690,14 +690,19 @@ const App = () => {
               ))}
             </select>
           )}
-          <div className="tags-list">
-            {formData.tags.map(tag => (
-              <span className="tag-item" key={tag}>
-                {getTagName(tag)}
-                <button type="button" onClick={() => handleRemoveTag(tag)} title="Удалить тег">×</button>
-              </span>
-            ))}
-          </div>
+          {formData.tags.length > 0 && (
+            <div className="tags-list-block">
+              <div className="tags-list-title"><span role="img" aria-label="Теги">🏷️</span> Выбранные теги:</div>
+              <div className="tags-list">
+                {formData.tags.map(tag => (
+                  <span className="tag-item" key={tag}>
+                    {getTagName(tag)}
+                    <button type="button" onClick={() => handleRemoveTag(tag)} title="Удалить тег" aria-label="Удалить тег">×</button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div>
