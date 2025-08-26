@@ -608,7 +608,7 @@ const App = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Тема тикета</label>
-          <input type="text" name="subject" value={formData.subject} onChange={handleChange} required />
+          <input type="text" name="subject" value={formData.subject} onChange={handleChange}  required placeholder="Введите имя агента... (необязательно)" />
         </div>
 
         <div>
