@@ -608,7 +608,7 @@ const App = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Тема тикета <span style={{fontWeight:400, color:'#888', fontSize:'13px'}}>(необязательно)</span></label>
-          <input type="text" name="subject" value={formData.subject} onChange={handleChange} required />
+          <input type="text" name="subject" value={formData.subject} onChange={handleChange} />
         </div>
 
         <div>
