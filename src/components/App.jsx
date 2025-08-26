@@ -607,8 +607,8 @@ const App = () => {
       
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Тема тикета</label>
-          <input type="text" name="subject" value={formData.subject} onChange={handleChange} placeholder="Введите имя агента... (необязательно)"  />
+          <label>Тема тикета <span style={{fontWeight:400, color:'#888', fontSize:'13px'}}>(необязательно)</span></label>
+          <input type="text" name="subject" value={formData.subject} onChange={handleChange} required />
         </div>
 
         <div>
@@ -624,7 +624,7 @@ const App = () => {
         <div>
           <label>Команда</label>
           <div style={{position: 'relative'}}>
-            <input type="text" value={teamInputValue !== '' ? teamInputValue : getTeamName(formData.team)} onChange={handleTeamInputChange} placeholder="Введите название команды..." />
+            <input type="text" value={teamInputValue !== '' ? teamInputValue : getTeamName(formData.team)} onChange={handleTeamInputChange} />
             {showTeamSuggestions && teamSuggestions.length > 0 && (
               <div className="suggestion-container">
                 {teamSuggestions.map((team, index) => (
@@ -636,9 +636,9 @@ const App = () => {
         </div>
 
         <div>
-          <label>Агент</label>
+          <label>Агент <span style={{fontWeight:400, color:'#888', fontSize:'13px'}}>(необязательно)</span></label>
           <div style={{position: 'relative'}}>
-            <input type="text" value={agentInputValue !== '' ? agentInputValue : getAgentName(formData.agent)} onChange={handleAgentInputChange} placeholder="Введите имя агента... (необязательно)" disabled={loading} />
+            <input type="text" value={agentInputValue !== '' ? agentInputValue : getAgentName(formData.agent)} onChange={handleAgentInputChange} disabled={loading} />
             {showAgentSuggestions && agentSuggestions.length > 0 && (
               <div className="suggestion-container">
                 {agentSuggestions.map((agent, index) => (
@@ -673,7 +673,7 @@ const App = () => {
         <div>
           <label>Теги</label>
           <div style={{position: 'relative'}}>
-            <input type="text" value={newTag} onChange={handleTagInputChange} onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), handleAddTag())} placeholder="Введите тег..." />
+            <input type="text" value={newTag} onChange={handleTagInputChange} onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), handleAddTag())} />
             {showSuggestions && suggestions.length > 0 && (
               <div className="suggestion-container">
                 {suggestions.map((suggestion, index) => (
