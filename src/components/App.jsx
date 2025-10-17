@@ -654,43 +654,6 @@ const App = () => {
         </div>
       )}
       
-      {/* Информация о данных от Chatwoot */}
-      {chatwootData && chatwootData.data && (
-        <div className="status-message" style={{backgroundColor: '#e8f5e8', border: '1px solid #4caf50'}}>
-          <div><strong>📊 Данные от Chatwoot:</strong></div>
-          {chatwootData.data.contact && (
-            <div>
-              <strong>Клиент:</strong> {chatwootData.data.contact.name || 'Не указано'} 
-              {chatwootData.data.contact.email && ` (${chatwootData.data.contact.email})`}
-            </div>
-          )}
-          {chatwootData.data.conversation && chatwootData.data.conversation.assignee && (
-            <div>
-              <strong>Назначенный агент:</strong> {chatwootData.data.conversation.assignee.name || 'Не назначен'}
-            </div>
-          )}
-          {chatwootData.data.currentAgent && (
-            <div>
-              <strong>Текущий агент:</strong> {chatwootData.data.currentAgent.name || 'Не указано'}
-            </div>
-          )}
-          <div style={{marginTop: '10px'}}>
-            <button 
-              type="button" 
-              className="secondary-btn main-btn" 
-              onClick={() => {
-                console.log('[Chatwoot] Принудительный запрос данных...');
-                if (window.parent && window.parent !== window) {
-                  window.parent.postMessage('chatwoot-dashboard-app:fetch-info', '*');
-                }
-              }}
-              style={{fontSize: '12px', padding: '5px 10px'}}
-            >
-              🔄 Обновить данные
-            </button>
-          </div>
-        </div>
-      )}
       
       {/* Кнопка для запроса данных, если они еще не получены */}
       {!chatwootData && (
