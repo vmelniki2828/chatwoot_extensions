@@ -41,6 +41,7 @@ const App = () => {
   const [pageData, setPageData] = useState({});
   const [dataLoaded, setDataLoaded] = useState(false);
   const [lastCreatedTicket, setLastCreatedTicket] = useState(null);
+  const [chatwootData, setChatwootData] = useState(null);
 
   // Функции для сохранения и загрузки данных формы
   const saveFormData = useCallback((data) => {
@@ -94,6 +95,48 @@ const App = () => {
     }
   }, 
   [formData.team, formData.agent, teamInputValue, agentInputValue]);
+
+  // Функция для автоматического заполнения полей данными из Chatwoot
+  const autoFillFromChatwoot = useCallback((chatwootContext) => {
+    if (!chatwootContext || !chatwootContext.data) return;
+    
+    const { conversation, contact, currentAgent } = chatwootContext.data;
+    const updates = {};
+    
+    // Заполняем имя клиента (автоматически, если есть данные от Chatwoot)
+    if (contact && contact.name) {
+      updates.requesterName = contact.name;
+    }
+    
+    // Заполняем email клиента (автоматически, если есть данные от Chatwoot)
+    if (contact && contact.email) {
+      updates.email = contact.email;
+    }
+    
+    // Заполняем команду (из assignee или custom_attributes)
+    if (conversation && conversation.assignee && conversation.assignee.name) {
+      // Ищем команду по имени assignee в списке команд
+      const foundTeam = teams.find(team => {
+        const teamName = team.name || team.ID || team.id || team;
+        return teamName.toLowerCase().includes(conversation.assignee.name.toLowerCase());
+      });
+      if (foundTeam) {
+        updates.team = foundTeam.ID || foundTeam.id || foundTeam;
+        setTeamInputValue(foundTeam.name || foundTeam.ID || foundTeam.id || foundTeam);
+      }
+    }
+    
+    // Если есть обновления, применяем их
+    if (Object.keys(updates).length > 0) {
+      setFormData(prev => {
+        const newData = { ...prev, ...updates };
+        saveFormData(newData);
+        return newData;
+      });
+      
+      console.log('[Chatwoot] Автоматически заполнены поля:', updates);
+    }
+  }, [teams, saveFormData]);
 
   // Упрощённая функция получения pageData только из URL параметров
   const getPageData = useCallback(() => {
@@ -207,16 +250,30 @@ const App = () => {
     function handleDashboardMessage(event) {
       if (!isJSONValid(event.data)) return;
       const eventData = JSON.parse(event.data);
-      // Если пришёл appContext с conversation.id — сохраняем его
-      if (eventData.event === 'appContext' && eventData.data && eventData.data.conversation && eventData.data.conversation.id) {
-        setPageData(prev => ({ ...prev, conversationId: eventData.data.conversation.id }));
-      }
+      
       // Выводим в консоль полученные данные
       console.log('[Chatwoot Dashboard App] Получен eventData:', eventData);
+      
+      // Если пришёл appContext с данными — сохраняем их
+      if (eventData.event === 'appContext' && eventData.data) {
+        console.log('[Chatwoot] Получены данные контекста:', eventData.data);
+        
+        setChatwootData(eventData);
+        
+        // Сохраняем conversation ID
+        if (eventData.data.conversation && eventData.data.conversation.id) {
+          setPageData(prev => ({ ...prev, conversationId: eventData.data.conversation.id }));
+          console.log('[Chatwoot] Conversation ID:', eventData.data.conversation.id);
+        }
+        
+        // Автоматически заполняем поля формы данными из Chatwoot
+        console.log('[Chatwoot] Запуск автозаполнения полей...');
+        autoFillFromChatwoot(eventData);
+      }
     }
     window.addEventListener('message', handleDashboardMessage);
     return () => window.removeEventListener('message', handleDashboardMessage);
-  }, []);
+  }, [autoFillFromChatwoot]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -594,6 +651,68 @@ const App = () => {
       {pageData.conversationId && (
         <div className="status-message">
           <strong>Conversation ID:</strong> {pageData.conversationId}
+        </div>
+      )}
+      
+      {/* Информация о данных от Chatwoot */}
+      {chatwootData && chatwootData.data && (
+        <div className="status-message" style={{backgroundColor: '#e8f5e8', border: '1px solid #4caf50'}}>
+          <div><strong>📊 Данные от Chatwoot:</strong></div>
+          {chatwootData.data.contact && (
+            <div>
+              <strong>Клиент:</strong> {chatwootData.data.contact.name || 'Не указано'} 
+              {chatwootData.data.contact.email && ` (${chatwootData.data.contact.email})`}
+            </div>
+          )}
+          {chatwootData.data.conversation && chatwootData.data.conversation.assignee && (
+            <div>
+              <strong>Назначенный агент:</strong> {chatwootData.data.conversation.assignee.name || 'Не назначен'}
+            </div>
+          )}
+          {chatwootData.data.currentAgent && (
+            <div>
+              <strong>Текущий агент:</strong> {chatwootData.data.currentAgent.name || 'Не указано'}
+            </div>
+          )}
+          <div style={{marginTop: '10px'}}>
+            <button 
+              type="button" 
+              className="secondary-btn main-btn" 
+              onClick={() => {
+                console.log('[Chatwoot] Принудительный запрос данных...');
+                if (window.parent && window.parent !== window) {
+                  window.parent.postMessage('chatwoot-dashboard-app:fetch-info', '*');
+                }
+              }}
+              style={{fontSize: '12px', padding: '5px 10px'}}
+            >
+              🔄 Обновить данные
+            </button>
+          </div>
+        </div>
+      )}
+      
+      {/* Кнопка для запроса данных, если они еще не получены */}
+      {!chatwootData && (
+        <div className="status-message" style={{backgroundColor: '#fff3cd', border: '1px solid #ffc107'}}>
+          <div><strong>⚠️ Данные от Chatwoot не получены</strong></div>
+          <div style={{marginTop: '10px'}}>
+            <button 
+              type="button" 
+              className="secondary-btn main-btn" 
+              onClick={() => {
+                console.log('[Chatwoot] Запрос данных...');
+                if (window.parent && window.parent !== window) {
+                  window.parent.postMessage('chatwoot-dashboard-app:fetch-info', '*');
+                } else {
+                  alert('Приложение должно быть запущено в Chatwoot Dashboard Apps');
+                }
+              }}
+              style={{fontSize: '12px', padding: '5px 10px'}}
+            >
+              📡 Запросить данные
+            </button>
+          </div>
         </div>
       )}
       
