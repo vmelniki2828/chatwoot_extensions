@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
+// Глобальная переменная для базового URL
+const PUBLIC_URL = process.env.REACT_APP_PUBLIC_URL || '';
+
 // Проверка валидности JSON
 function isJSONValid(str) {
   if (typeof str !== 'string') return false;
@@ -163,7 +166,7 @@ const App = () => {
   const fetchAgents = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://chatwoot.qodeq.net/service/api/v1/helpdesk/agents_list', {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/agents_list`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -185,7 +188,7 @@ const App = () => {
 
   const fetchTeams = useCallback(async () => {
     try {
-      const response = await fetch('https://chatwoot.qodeq.net/service/api/v1/helpdesk/teams_list', {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/teams_list`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -205,7 +208,7 @@ const App = () => {
 
   const fetchTags = useCallback(async () => {
     try {
-      const response = await fetch('https://chatwoot.qodeq.net/service/api/v1/helpdesk/tags_list', {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/tags_list`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -568,7 +571,7 @@ const App = () => {
     console.log('Available tags sample:', availableTags.slice(0, 3));
     
     try {
-      const response = await fetch(`https://chatwoot.qodeq.net/service/api/v1/helpdesk/ticket-from-chat/${conversationId}`, {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/ticket-from-chat/${conversationId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -589,7 +592,7 @@ const App = () => {
           subject: requestData.subject,
           conversationId: conversationId,
           createdAt: new Date().toISOString(),
-          url: responseData.url || responseData.link || `https://chatwoot.qodeq.net/helpdesk/tickets/${responseData.id || responseData.ID}`
+          url: responseData.url || responseData.link || null
         };
         saveLastCreatedTicket(ticketInfo);
         setLastCreatedTicket(ticketInfo);
