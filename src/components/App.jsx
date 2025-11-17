@@ -168,10 +168,11 @@ const App = () => {
     try {
       const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/agents_list`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-        }
+        },
       });
       if (response.ok) {
         const agentsData = await response.json();
@@ -190,6 +191,7 @@ const App = () => {
     try {
       const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/teams_list`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -210,6 +212,7 @@ const App = () => {
     try {
       const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/tags_list`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -573,6 +576,7 @@ const App = () => {
     try {
       const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/ticket-from-chat/${conversationId}`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
