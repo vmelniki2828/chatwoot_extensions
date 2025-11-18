@@ -14,14 +14,6 @@ function isJSONValid(str) {
   }
 }
 
-function getCookie(name) {
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  if (match) {
-      return match[2];
-  }
-  return null;
-}
-
 const App = () => {
   const [formData, setFormData] = useState({
     subject: '',
@@ -174,7 +166,7 @@ const App = () => {
   const fetchAgents = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/agents_list?session=${getCookie('cw_d_session_info')}`, {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/agents_list`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -196,9 +188,8 @@ const App = () => {
 
   const fetchTeams = useCallback(async () => {
     try {
-      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/teams_list?session=${getCookie('cw_d_session_info')}`, {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/teams_list`, {
         method: 'GET',
-        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -217,9 +208,8 @@ const App = () => {
 
   const fetchTags = useCallback(async () => {
     try {
-      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/tags_list?session=${getCookie('cw_d_session_info')}`, {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/tags_list`, {
         method: 'GET',
-        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -581,9 +571,8 @@ const App = () => {
     console.log('Available tags sample:', availableTags.slice(0, 3));
     
     try {
-      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/ticket-from-chat/${conversationId}?session=${getCookie('cw_d_session_info')}`, {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/ticket-from-chat/${conversationId}`, {
         method: 'POST',
-        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
