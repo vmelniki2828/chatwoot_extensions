@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 // Глобальная переменная для базового URL
-const PUBLIC_URL = process.env.REACT_APP_PUBLIC_URL || '';
+const PUBLIC_URL = process.env.PUBLIC_URL || '';
 
 // Проверка валидности JSON
 function isJSONValid(str) {
