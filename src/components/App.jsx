@@ -14,6 +14,22 @@ function isJSONValid(str) {
   }
 }
 
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 const App = () => {
   const [formData, setFormData] = useState({
     subject: '',
@@ -166,9 +182,8 @@ const App = () => {
   const fetchAgents = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/agents_list`, {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/agents_list?session=${getCookie('cw_d_session_info')}`, {
         method: 'GET',
-        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -189,7 +204,7 @@ const App = () => {
 
   const fetchTeams = useCallback(async () => {
     try {
-      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/teams_list`, {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/teams_list?session=${getCookie('cw_d_session_info')}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -210,7 +225,7 @@ const App = () => {
 
   const fetchTags = useCallback(async () => {
     try {
-      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/tags_list`, {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/tags_list?session=${getCookie('cw_d_session_info')}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -574,7 +589,7 @@ const App = () => {
     console.log('Available tags sample:', availableTags.slice(0, 3));
     
     try {
-      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/ticket-from-chat/${conversationId}`, {
+      const response = await fetch(`${PUBLIC_URL}/api/v1/helpdesk/ticket-from-chat/${conversationId}?session=${getCookie('cw_d_session_info')}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
